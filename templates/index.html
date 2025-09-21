@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT 儀表板</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #343a40;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-top: 15px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .status-online { background-color: #28a745; } /* Green */
+        .status-offline { background-color: #dc3545; } /* Red */
+        .status-warning { background-color: #ffc107; } /* Yellow */
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* RWD adjustments */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .card h2 {
+                font-size: 1.5rem;
+            }
+            .card .value {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 15px;
+            }
+            .card h2 {
+                font-size: 1.3rem;
+            }
+            .card .value {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IoT 智慧儀表板</h1>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>溫度感測器</h2>
+                <p>位置: 客廳</p>
+                <p>狀態: <span class="status-indicator status-online"></span>線上</p>
+                <p>目前溫度: <span id="temperature" class="value">25.0</span> °C</p>
+            </div>
+
+            <div class="card">
+                <h2>濕度感測器</h2>
+                <p>位置: 客廳</p>
+                <p>狀態: <span class="status-indicator status-online"></span>線上</p>
+                <p>目前濕度: <span id="humidity" class="value">60</span> %</p>
+            </div>
+
+            <div class="card">
+                <h2>門窗感測器</h2>
+                <p>位置: 大門</p>
+                <p>狀態: <span class="status-indicator status-warning"></span>開啟</p>
+                <p>上次更新: <span id="door-status">2025/09/21 10:30</span></p>
+            </div>
+
+            <div class="card">
+                <h2>智慧燈泡</h2>
+                <p>位置: 臥室</p>
+                <p>狀態: <span class="status-indicator status-offline"></span>離線</p>
+                <p>亮度: <span id="light-brightness">0</span> %</p>
+            </div>
+
+            <div class="card">
+                <h2>空氣品質感測器</h2>
+                <p>位置: 陽台</p>
+                <p>狀態: <span class="status-indicator status-online"></span>線上</p>
+                <p>PM2.5: <span id="pm25" class="value">15</span> µg/m³</p>
+            </div>
+
+            <div class="card">
+                <h2>智慧插座</h2>
+                <p>位置: 書房</p>
+                <p>狀態: <span class="status-indicator status-online"></span>開啟</p>
+                <p>耗電量: <span id="power-consumption">50</span> W</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 IoT 智慧儀表板. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 模擬 IoT 數據更新
+        function updateIoTData() {
+            // 溫度 (20-30°C)
+            document.getElementById('temperature').textContent = (Math.random() * 10 + 20).toFixed(1);
+            // 濕度 (40-80%)
+            document.getElementById('humidity').textContent = Math.floor(Math.random() * 40) + 40;
+            // PM2.5 (5-50 µg/m³)
+            document.getElementById('pm25').textContent = Math.floor(Math.random() * 45) + 5;
+            // 耗電量 (20-100W)
+            document.getElementById('power-consumption').textContent = Math.floor(Math.random() * 80) + 20;
+
+            // 門窗狀態模擬 (開/關)
+            const doorStatusElement = document.getElementById('door-status');
+            const doorStatusIndicator = doorStatusElement.previousElementSibling.previousElementSibling; // Get the status indicator span
+            if (Math.random() > 0.7) { // 30% chance of being open
+                doorStatusElement.textContent = '開啟';
+                doorStatusIndicator.className = 'status-indicator status-warning';
+            } else {
+                doorStatusElement.textContent = '關閉';
+                doorStatusIndicator.className = 'status-indicator status-online';
+            }
+
+            // 智慧燈泡狀態模擬 (開/關/亮度)
+            const lightBrightnessElement = document.getElementById('light-brightness');
+            const lightStatusIndicator = lightBrightnessElement.previousElementSibling.previousElementSibling; // Get the status indicator span
+            if (Math.random() > 0.8) { // 20% chance of being offline
+                lightBrightnessElement.textContent = '0';
+                lightStatusIndicator.className = 'status-indicator status-offline';
+                lightBrightnessElement.parentElement.previousElementSibling.textContent = '狀態: 離線';
+            } else {
+                const brightness = Math.floor(Math.random() * 100);
+                lightBrightnessElement.textContent = brightness;
+                lightStatusIndicator.className = 'status-indicator status-online';
+                lightBrightnessElement.parentElement.previousElementSibling.textContent = '狀態: 線上';
+            }
+
+            // 更新時間
+            const now = new Date();
+            const timeString = now.getFullYear() + '/' +
+                               (now.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                               now.getDate().toString().padStart(2, '0') + ' ' +
+                               now.getHours().toString().padStart(2, '0') + ':' +
+                               now.getMinutes().toString().padStart(2, '0');
+            // 這裡沒有特定的元素來顯示整體更新時間，但可以在個別卡片中更新
+        }
+
+        // 每 5 秒更新一次數據
+        setInterval(updateIoTData, 5000);
+
+        // 首次載入時更新數據
+        updateIoTData();
+    </script>
+</body>
+</html>
