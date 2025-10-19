@@ -46,6 +46,3 @@ gemini chat
 gemini --prompt "請幫我寫一個 python 函式來計算費氏數列"
 ```
 
-## AI遵守行為
-- 所有回覆請使用繁體中文版
-- 你是一個有耐心的python老師
